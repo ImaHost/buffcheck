@@ -1,20 +1,8 @@
 const { BrowserWindow, screen } = require('electron');
 const path = require('path');
+const { loadAppPage } = require('../loadAppPage');
 
 let captureWin = null;
-
-function getDevUrl(hash) {
-  return `http://localhost:5173/#/${hash}`;
-}
-
-function getProdUrl(hash) {
-  return `file://${path.join(__dirname, '..', 'dist', 'index.html')}#/${hash}`;
-}
-
-function loadOverlay(win, hash) {
-  const isDev = !require('electron').app.isPackaged;
-  win.loadURL(isDev ? getDevUrl(hash) : getProdUrl(hash));
-}
 
 function createCaptureOverlay() {
   if (captureWin && !captureWin.isDestroyed()) {
@@ -44,7 +32,7 @@ function createCaptureOverlay() {
   });
 
   captureWin.setAlwaysOnTop(true, 'screen-saver');
-  loadOverlay(captureWin, 'capture-overlay');
+  loadAppPage(captureWin, 'capture-overlay');
 
   captureWin.on('closed', () => {
     captureWin = null;

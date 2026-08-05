@@ -60,7 +60,7 @@ export default function CaptureOverlay() {
       onPointerUp={handlePointerUp}
     >
       <div className="hint-bar">
-        드래그로 버프창 영역을 선택하세요 · Esc 취소 · F8로 다시 열기
+        드래그로 버프창 영역을 선택하세요 · 선택 후 아이콘 자동등록 · Esc 취소
       </div>
       {rect && (
         <div

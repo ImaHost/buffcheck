@@ -33,6 +33,7 @@ from icon_matcher import find_all_icons
 from time_ocr import read_time_for_match
 from buff_state import BuffTimer
 from app_paths import project_root
+from auto_register import auto_register_from_panel
 
 _ROOT = project_root()
 _ICON_DIR = os.path.join(_ROOT, ICON_DIR)
@@ -127,6 +128,53 @@ def listen_commands():
                 flush=True,
             )
             emit({"type": "status", "notifyThreshold": sec})
+
+        elif cmd_type == "auto_register":
+            # 영역 캡처 → 아이콘 자동 등록 → DB 리로드
+            try:
+                x = int(cmd["x"])
+                y = int(cmd["y"])
+                width = int(cmd["width"])
+                height = int(cmd["height"])
+            except (KeyError, TypeError, ValueError) as e:
+                emit({
+                    "type": "auto_register_result",
+                    "ok": False,
+                    "message": f"영역 좌표 오류: {e}",
+                })
+                continue
+
+            try:
+                with mss.MSS() as sct:
+                    shot = sct.grab({
+                        "left": x,
+                        "top": y,
+                        "width": max(1, width),
+                        "height": max(1, height),
+                    })
+                    panel = np.ascontiguousarray(np.array(shot)[:, :, :3])
+                result = auto_register_from_panel(panel)
+                count = reload_icons()
+                emit({
+                    "type": "auto_register_result",
+                    "ok": True,
+                    "added": result.get("added") or [],
+                    "skipped": result.get("skipped") or [],
+                    "boxCount": result.get("boxCount") or 0,
+                    "iconCount": count,
+                    "message": (
+                        f"신규 {len(result.get('added') or [])}개 등록 "
+                        f"(유지 {len(result.get('skipped') or [])}개)"
+                    ),
+                })
+                emit({"type": "status", "iconCount": count})
+            except Exception as e:
+                print(f"[backend] auto_register error: {e}", file=sys.stderr, flush=True)
+                emit({
+                    "type": "auto_register_result",
+                    "ok": False,
+                    "message": str(e),
+                })
 
 
 def emit(data: dict):

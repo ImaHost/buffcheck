@@ -1,20 +1,8 @@
 const { BrowserWindow } = require('electron');
 const path = require('path');
+const { loadAppPage } = require('../loadAppPage');
 
 let controlWin = null;
-
-function getDevUrl(hash) {
-  return `http://localhost:5173/#/${hash}`;
-}
-
-function getProdUrl(hash) {
-  return `file://${path.join(__dirname, '..', 'dist', 'index.html')}#/${hash}`;
-}
-
-function loadPage(win, hash) {
-  const isDev = !require('electron').app.isPackaged;
-  win.loadURL(isDev ? getDevUrl(hash) : getProdUrl(hash));
-}
 
 function createControlWindow() {
   if (controlWin && !controlWin.isDestroyed()) {
@@ -40,11 +28,10 @@ function createControlWindow() {
   });
 
   controlWin.setMenuBarVisibility(false);
-  loadPage(controlWin, 'control');
+  loadAppPage(controlWin, 'control');
 
   controlWin.on('closed', () => {
     controlWin = null;
-    // 알림 오버레이가 남아 있어도 컨트롤 창이 닫히면 앱 종료
     const { app } = require('electron');
     if (!app.isQuitting) {
       app.quit();

@@ -15,6 +15,11 @@ const {
   createControlWindow,
   destroyControlWindow,
 } = require('./ipc/controlWindow');
+const {
+  showBusyOverlay,
+  hideBusyOverlay,
+  destroyBusyOverlay,
+} = require('./ipc/busyOverlay');
 const { startPythonBackend, sendCommand, stopPythonBackend } = require('./pyBridge');
 const {
   setupAutoUpdater,
@@ -35,6 +40,7 @@ const monitorStatus = {
   detections: [],
   renewals: [],
   lastError: null,
+  registerMessage: null,
 };
 
 function clampThreshold(value) {
@@ -96,7 +102,24 @@ app.whenReady().then(() => {
   });
 
   startPythonBackend((frameData) => {
+    if (frameData?.type === 'auto_register_result') {
+      hideBusyOverlay();
+      if (typeof frameData.iconCount === 'number') {
+        monitorStatus.iconCount = frameData.iconCount;
+      }
+      if (frameData.ok) {
+        monitorStatus.lastError = null;
+        monitorStatus.registerMessage = frameData.message || '자동등록 완료';
+      } else {
+        monitorStatus.lastError = frameData.message || '자동등록 실패';
+        monitorStatus.registerMessage = null;
+      }
+      broadcastStatus();
+      return;
+    }
+
     if (frameData?.type === 'error') {
+      hideBusyOverlay();
       setError(frameData.message || '백엔드 오류');
       return;
     }
@@ -257,11 +280,19 @@ app.whenReady().then(() => {
     };
     monitorStatus.region = region;
     monitorStatus.lastError = null;
+    monitorStatus.registerMessage = null;
     sendCommand({
       type: 'set_region',
       ...region,
     });
     hideCaptureOverlay();
+    showBusyOverlay('자동등록중...');
+    sendCommand({
+      type: 'auto_register',
+      ...region,
+    });
+    // 백엔드 무응답 대비
+    setTimeout(() => hideBusyOverlay(), 45000);
     broadcastStatus();
   });
 });
@@ -270,6 +301,7 @@ app.on('will-quit', () => {
   globalShortcut.unregisterAll();
   stopPythonBackend();
   destroyCaptureOverlay();
+  destroyBusyOverlay();
   destroyNotifyOverlay();
   destroyControlWindow();
 });

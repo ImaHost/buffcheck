@@ -1,11 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const { app } = require('electron');
-const { getProjectRoot } = require('./pyBridge');
 
 function patchNotesPath() {
   if (app.isPackaged) {
-    return path.join(getProjectRoot(), 'PATCHNOTES.md');
+    return path.join(process.resourcesPath, 'PATCHNOTES.md');
   }
   return path.join(__dirname, '..', 'PATCHNOTES.md');
 }

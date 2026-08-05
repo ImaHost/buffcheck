@@ -52,6 +52,8 @@ def main() -> int:
         "--hidden-import",
         "pytesseract",
         "--hidden-import",
+        "auto_register",
+        "--hidden-import",
         "app_paths",
         "--hidden-import",
         "buff_state",

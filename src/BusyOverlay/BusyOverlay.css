@@ -1,0 +1,55 @@
+html.overlay-page,
+html.overlay-page body,
+html.overlay-page #root {
+  background: transparent !important;
+  overflow: hidden;
+}
+
+.busy-root {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: rgba(6, 12, 9, 0.62);
+  cursor: wait;
+  user-select: none;
+}
+
+.busy-card {
+  min-width: 280px;
+  padding: 28px 36px;
+  border: 1px solid rgba(198, 167, 94, 0.4);
+  background: linear-gradient(165deg, rgba(22, 36, 28, 0.96), rgba(10, 18, 14, 0.98));
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.busy-spinner {
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 16px;
+  border: 3px solid rgba(198, 167, 94, 0.25);
+  border-top-color: var(--gold-soft, #e2c98a);
+  border-radius: 50%;
+  animation: busy-spin 0.85s linear infinite;
+}
+
+.busy-text {
+  margin: 0;
+  color: var(--gold-soft, #e2c98a);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.busy-sub {
+  margin: 10px 0 0;
+  color: var(--muted, #9aaf9f);
+  font-size: 0.9rem;
+}
+
+@keyframes busy-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

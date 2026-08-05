@@ -255,8 +255,11 @@ export default function ControlPanel() {
             </div>
 
             {status.lastError && <p className="error">오류: {status.lastError}</p>}
+            {status.registerMessage && !status.lastError && (
+              <p className="state ready">{status.registerMessage}</p>
+            )}
             {message && <p className="state on">{message}</p>}
-            {!message && (
+            {!message && !status.registerMessage && (
               <p className={`state ${status.running ? 'on' : region ? 'ready' : ''}`}>
                 {status.running
                   ? `감시 중 — 등록 ${iconCount}개 중 ${matchCount}개 매칭 · 추적 ${trackedCount} · 임박 ${renewals.length}`

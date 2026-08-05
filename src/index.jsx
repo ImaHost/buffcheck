@@ -4,6 +4,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 import CaptureOverlay from './CaptureOverlay/CaptureOverlay';
 import NotifyOverlay from './NotifyOverlay/NotifyOverlay';
 import ControlPanel from './ControlPanel/ControlPanel';
+import BusyOverlay from './BusyOverlay/BusyOverlay';
 import './styles/global.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/control" element={<ControlPanel />} />
         <Route path="/capture-overlay" element={<CaptureOverlay />} />
         <Route path="/notify-overlay" element={<NotifyOverlay />} />
+        <Route path="/busy-overlay" element={<BusyOverlay />} />
         <Route path="*" element={<ControlPanel />} />
       </Routes>
     </HashRouter>

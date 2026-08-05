@@ -28,4 +28,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.on('update-status', handler);
     return () => ipcRenderer.removeListener('update-status', handler);
   },
+  onBusyMessage: (callback) => {
+    const handler = (_event, data) => callback(data);
+    ipcRenderer.on('busy-message', handler);
+    return () => ipcRenderer.removeListener('busy-message', handler);
+  },
 });

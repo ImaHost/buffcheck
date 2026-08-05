@@ -11,7 +11,7 @@ from config import RED_TIME_MAX
 from app_paths import project_root
 
 _ROOT = project_root()
-_LOCAL_TESSDATA = os.path.join(_ROOT, "tessdata")
+_LOCAL_TESSDATA = os.environ.get("TESSDATA_PREFIX") or os.path.join(_ROOT, "tessdata")
 
 try:
     _cmd = os.environ.get("TESSERACT_CMD")

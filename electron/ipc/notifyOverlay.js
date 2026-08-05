@@ -1,20 +1,8 @@
 const { BrowserWindow, screen } = require('electron');
 const path = require('path');
+const { loadAppPage } = require('../loadAppPage');
 
 let notifyWin = null;
-
-function getDevUrl(hash) {
-  return `http://localhost:5173/#/${hash}`;
-}
-
-function getProdUrl(hash) {
-  return `file://${path.join(__dirname, '..', 'dist', 'index.html')}#/${hash}`;
-}
-
-function loadOverlay(win, hash) {
-  const isDev = !require('electron').app.isPackaged;
-  win.loadURL(isDev ? getDevUrl(hash) : getProdUrl(hash));
-}
 
 function createNotifyOverlay() {
   if (notifyWin && !notifyWin.isDestroyed()) {
@@ -35,7 +23,6 @@ function createNotifyOverlay() {
     alwaysOnTop: true,
     skipTaskbar: true,
     resizable: false,
-    // 드래그하려면 포커스/마우스 이벤트가 필요
     focusable: true,
     hasShadow: false,
     show: false,
@@ -47,9 +34,8 @@ function createNotifyOverlay() {
   });
 
   notifyWin.setAlwaysOnTop(true, 'screen-saver');
-  // 클릭 통과 제거 — 헤더를 드래그해 위치를 옮길 수 있음
   notifyWin.setIgnoreMouseEvents(false);
-  loadOverlay(notifyWin, 'notify-overlay');
+  loadAppPage(notifyWin, 'notify-overlay');
 
   notifyWin.on('closed', () => {
     notifyWin = null;
