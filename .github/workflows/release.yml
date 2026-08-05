@@ -42,7 +42,13 @@ jobs:
         run: python scripts/stage_tesseract.py
 
       - name: Ensure icons DB
-        run: python backend/build_icon_db.py
+        shell: pwsh
+        run: |
+          if (Test-Path icons.db) {
+            Write-Host "icons.db already present — skip rebuild"
+          } else {
+            python backend/build_icon_db.py
+          }
 
       - name: Build frontend + backend + installer
         env:

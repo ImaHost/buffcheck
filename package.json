@@ -1,6 +1,6 @@
 {
   "name": "buffcheck",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "마비노기 버프 타이머 알림 (BuffCheck)",
   "main": "electron/main.js",
   "author": "ImaHost",
