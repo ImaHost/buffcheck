@@ -1,0 +1,119 @@
+html.overlay-page,
+html.overlay-page body,
+html.overlay-page #root {
+  background: transparent !important;
+  overflow: hidden;
+}
+
+.panel-shell {
+  margin: 8px;
+  padding: 14px 14px 12px;
+  border: 1px solid rgba(198, 167, 94, 0.45);
+  background: linear-gradient(160deg, rgba(15, 26, 20, 0.92), rgba(22, 36, 28, 0.88));
+  backdrop-filter: blur(8px);
+  color: var(--ink);
+  animation: fade-in 0.4s ease both;
+  min-height: calc(100% - 16px);
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", "Segoe UI", sans-serif;
+}
+
+.panel-shell.pulse {
+  animation: fade-in 0.4s ease both, pulse-once 0.55s ease;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+.panel-drag {
+  -webkit-app-region: drag;
+  cursor: grab;
+}
+
+.drag-hint {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 2px 4px;
+  opacity: 0.7;
+  user-select: none;
+}
+
+.panel-header .brand {
+  margin: 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.panel-header h1 {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--gold-soft);
+}
+
+.panel-sub {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.ok {
+  margin: 10px 0 0;
+  color: #8fbf9a;
+  font-size: 0.9rem;
+}
+
+.idle-hint {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.buff-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+}
+
+.buff-list.muted .time {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.buff-list.muted li {
+  opacity: 0.75;
+}
+
+.buff-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  animation: slide-in 0.3s ease both;
+}
+
+.buff-list .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.buff-list .time {
+  font-variant-numeric: tabular-nums;
+  color: var(--amber);
+  font-weight: 700;
+}
+
+.buff-list li.critical .time {
+  color: var(--danger);
+}

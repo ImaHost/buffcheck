@@ -1,0 +1,110 @@
+{
+  "name": "buffcheck",
+  "version": "1.0.0",
+  "description": "마비노기 버프 타이머 알림 (BuffCheck)",
+  "main": "electron/main.js",
+  "author": "ImaHost",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ImaHost/buffcheck.git"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "electron": "electron .",
+    "start": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "build-icons-db": "py backend/build_icon_db.py",
+    "build:backend": "py scripts/build_backend.py",
+    "stage:tesseract": "py scripts/stage_tesseract.py",
+    "dist": "npm run stage:tesseract && npm run build && npm run build:backend && electron-builder --win nsis --publish never",
+    "dist:publish": "npm run stage:tesseract && npm run build && npm run build:backend && electron-builder --win nsis --publish always",
+    "release:notes": "node scripts/extract_release_notes.js"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.26.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^8.2.2",
+    "electron": "^31.0.0",
+    "electron-builder": "^24.0.0",
+    "vite": "^5.4.0",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.imahost.buffcheck",
+    "productName": "BuffCheck",
+    "copyright": "Copyright © ImaHost",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "backend-dist/",
+        "to": ".",
+        "filter": [
+          "buffcheck-backend.exe",
+          "buffcheck-backend"
+        ]
+      },
+      {
+        "from": "buff_icons",
+        "to": "buff_icons"
+      },
+      {
+        "from": "tessdata",
+        "to": "tessdata"
+      },
+      {
+        "from": "icons.db",
+        "to": "icons.db"
+      },
+      {
+        "from": "PATCHNOTES.md",
+        "to": "PATCHNOTES.md"
+      },
+      {
+        "from": "vendor/tesseract",
+        "to": "tesseract",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "ImaHost",
+        "repo": "buffcheck",
+        "releaseType": "release"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "BuffCheck-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "BuffCheck"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+:root {
+  --bg-deep: #0f1a14;
+  --bg-mid: #16241c;
+  --bg-lift: #1d3227;
+  --gold: #c6a75e;
+  --gold-soft: #e2c98a;
+  --ink: #e8efe6;
+  --muted: #9aaf9f;
+  --amber: #e09a3e;
+  --danger: #d4653a;
+  --line: rgba(198, 167, 94, 0.28);
+  --shadow: rgba(0, 0, 0, 0.45);
+  --font-display: "Cinzel", "Malgun Gothic", "Apple SD Gothic Neo", "Palatino Linotype", Georgia, serif;
+  --font-body: "Malgun Gothic", "Apple SD Gothic Neo", "Source Sans 3", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-once {
+  0% {
+    box-shadow: 0 0 0 0 rgba(224, 154, 62, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgba(224, 154, 62, 0);
+  }
+}
